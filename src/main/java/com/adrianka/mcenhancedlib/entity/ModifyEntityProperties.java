@@ -4,10 +4,12 @@ import com.adrianka.mcenhancedlib.MCEnhancedLIB;
 import com.adrianka.mcenhancedlib.attachment.Attachments;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.List;
@@ -30,19 +32,13 @@ public class ModifyEntityProperties {
             mob.addEffect(new MobEffectInstance(effect, duration, amplifier));
     }
 
-    private static double playerMaxHealth = 20.0;
-
-    public static double getPlayerMaxHealth() { return playerMaxHealth; }
-
-    public static void setPlayerMaxHealth(double playerMaxHealth) {
-        ModifyEntityProperties.playerMaxHealth = playerMaxHealth;
-    }
+    private static final Identifier HEARTS_COUNT_ID = Identifier.fromNamespaceAndPath(MCEnhancedLIB.MODID, "hearts_count");
 
     public static void resetPlayerMaxHealth(ServerPlayer player) {
         GameProfile playerProfile = player.getGameProfile();
 
         player.setData(Attachments.HEARTS_MODIFIED, 0);
-        player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getPlayerMaxHealth());
+        player.getAttribute(Attributes.MAX_HEALTH).removeModifier(HEARTS_COUNT_ID);
 
         MCEnhancedLIB.LOGGER.info(
                 "Reseted hearts for {}. UUID = {}",
@@ -51,8 +47,14 @@ public class ModifyEntityProperties {
         );
     }
 
+    /**
+     * @param hearts The total number of hearts to be modified—for example, a value of 1 corresponds to 1 heart, or 2 units of health.
+     */
     public static void updatePlayerMaxHealth(ServerPlayer player, int hearts) {
         int heartsModified = player.getData(Attachments.HEARTS_MODIFIED);
+
+        /*  minTotalHearts will be modified in the future to change the minimum number of negative hearts,
+            in order to avoid errors related to negative numbers beyond -9. */
         int minTotalHearts = -10 + 1;
 
         GameProfile playerProfile = player.getGameProfile();
@@ -64,7 +66,9 @@ public class ModifyEntityProperties {
         else
             player.setData(Attachments.HEARTS_MODIFIED, heartsModified += hearts);
 
-        player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getPlayerMaxHealth() + (heartsModified * 2.0));
+        player.getAttribute(Attributes.MAX_HEALTH).addOrReplacePermanentModifier(
+                new AttributeModifier(HEARTS_COUNT_ID, heartsModified * 2.0, AttributeModifier.Operation.ADD_VALUE)
+        );
 
         MCEnhancedLIB.LOGGER.info(
                 "Hearts edited for {}: Hearts modified attachment = {}, Hearts variable = {}, UUID = {}",

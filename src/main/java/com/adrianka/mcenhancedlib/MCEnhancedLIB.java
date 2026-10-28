@@ -1,5 +1,6 @@
 package com.adrianka.mcenhancedlib;
 
+import com.adrianka.mcenhancedlib.attachment.Attachments;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -19,5 +20,6 @@ public class MCEnhancedLIB {
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public MCEnhancedLIB(IEventBus modEventBus, ModContainer modContainer) {
+        Attachments.ATTACHMENTS.register(modEventBus);
     }
 }

@@ -15,11 +15,11 @@ public class MCELAttachments {
                     MCEnhancedLIB.MODID
             );
 
-    public static final Supplier<AttachmentType<Integer>> HEARTS_MODIFIED  =
+    public static final Supplier<AttachmentType<Double>> HEALTH_MODIFIED  =
             ATTACHMENTS.register(
-                    "hearts_modified",
-                    () -> AttachmentType.builder(() -> 0)
-                            .serialize(Codec.INT.fieldOf("hearts_modified"))
+                    "modified_hearts",
+                    () -> AttachmentType.builder(() -> 0.0)
+                            .serialize(Codec.DOUBLE.fieldOf("modified_hearts"))
                             .copyOnDeath()
                             .build()
             );

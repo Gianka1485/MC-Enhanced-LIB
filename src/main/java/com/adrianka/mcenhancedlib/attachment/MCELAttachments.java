@@ -17,9 +17,9 @@ public class MCELAttachments {
 
     public static final Supplier<AttachmentType<Double>> HEALTH_MODIFIED  =
             ATTACHMENTS.register(
-                    "modified_hearts",
+                    "modified_health",
                     () -> AttachmentType.builder(() -> 0.0)
-                            .serialize(Codec.DOUBLE.fieldOf("modified_hearts"))
+                            .serialize(Codec.DOUBLE.fieldOf("modified_health"))
                             .copyOnDeath()
                             .build()
             );

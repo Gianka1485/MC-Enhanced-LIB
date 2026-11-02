@@ -22,7 +22,7 @@ public record MCELDataState<T extends SavedData>(
         String modID,
         String path,
         Supplier<T> constructor,
-        Function<RecordCodecBuilder.Instance<T>, RecordCodecBuilder<T, T>> codecGroup
+        Function<RecordCodecBuilder.Instance<T>, App<RecordCodecBuilder.Mu<T>, T>> codecGroup
 ) {
     public SavedDataType<T> savedData() {
         return new SavedDataType<>(

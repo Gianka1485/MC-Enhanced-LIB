@@ -1,4 +1,4 @@
-package com.adrianka.mcenhancedlib.attachment;
+package com.adrianka.mcenhancedlib.server.attachment;
 
 import com.adrianka.mcenhancedlib.MCEnhancedLIB;
 import com.mojang.serialization.Codec;

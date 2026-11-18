@@ -1,4 +1,4 @@
-package com.adrianka.mcenhancedlib.world;
+package com.adrianka.mcenhancedlib.server.world;
 
 import net.minecraft.server.MinecraftServer;
 

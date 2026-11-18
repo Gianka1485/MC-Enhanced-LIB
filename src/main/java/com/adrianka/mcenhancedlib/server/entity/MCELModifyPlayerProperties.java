@@ -1,7 +1,7 @@
-package com.adrianka.mcenhancedlib.entity;
+package com.adrianka.mcenhancedlib.server.entity;
 
 import com.adrianka.mcenhancedlib.MCEnhancedLIB;
-import com.adrianka.mcenhancedlib.attachment.MCELAttachments;
+import com.adrianka.mcenhancedlib.server.attachment.MCELAttachments;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;

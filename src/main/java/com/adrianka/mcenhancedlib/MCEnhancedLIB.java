@@ -1,7 +1,6 @@
 package com.adrianka.mcenhancedlib;
 
-import com.adrianka.mcenhancedlib.attachment.MCELAttachments;
-import net.neoforged.neoforge.common.NeoForge;
+import com.adrianka.mcenhancedlib.server.attachment.MCELAttachments;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;

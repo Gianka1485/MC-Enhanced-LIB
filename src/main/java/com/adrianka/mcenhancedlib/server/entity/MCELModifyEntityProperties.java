@@ -1,4 +1,4 @@
-package com.adrianka.mcenhancedlib.entity;
+package com.adrianka.mcenhancedlib.server.entity;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;

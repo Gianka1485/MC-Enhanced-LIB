@@ -1,4 +1,4 @@
-package com.adrianka.mcenhancedlib.data;
+package com.adrianka.mcenhancedlib.server.data;
 
 import com.mojang.datafixers.kinds.App;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

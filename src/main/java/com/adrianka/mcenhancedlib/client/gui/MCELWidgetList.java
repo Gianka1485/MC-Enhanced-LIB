@@ -24,9 +24,6 @@ public class MCELWidgetList extends AbstractSelectionList<MCELWidgetList.WidgetE
     public void clearWidgets() { this.clearEntries(); }
 
     @Override
-    public int getRowWidth() { return this.width - 4; }
-
-    @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
 
     public static class WidgetEntry extends AbstractSelectionList.Entry<WidgetEntry> {

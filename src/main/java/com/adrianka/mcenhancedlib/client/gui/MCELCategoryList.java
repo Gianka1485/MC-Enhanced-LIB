@@ -58,9 +58,6 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
     }
 
     @Override
-    public int getRowWidth() { return this.width - 4; }
-
-    @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
 
     /**
@@ -121,12 +118,13 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
             graphics.text(
                     this.font,
                     this.title,
-                    xPaddingText == null ?
-                            (this.getContentX() - this.font.width(this.title)) / 2 :
-                            this.getContentX() + xPaddingText,
-                    yPaddingText == null ?
-                            (this.getContentY() - this.font.lineHeight) / 2 :
-                            this.getContentY() + yPaddingText,
+                    this.xPaddingText != null ?
+                            this.getContentX() + this.xPaddingText :
+                            this.getContentX() + (this.getContentWidth() - this.font.width(this.title)) / 2,
+
+                    this.yPaddingText != null ?
+                            this.getContentY() + this.yPaddingText :
+                            this.getContentY() + (this.getContentHeight() - this.font.lineHeight) / 2,
                     color
             );
         }

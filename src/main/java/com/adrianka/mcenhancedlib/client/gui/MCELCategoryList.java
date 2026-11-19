@@ -47,7 +47,7 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
      *                     the content will be centered vertically
      * @param font the font used to render the category title
      */
-    public void addCategory(String translatableKey, E category, int xPaddingText, int yPaddingText, Font font) {
+    public void addCategory(String translatableKey, E category, Integer xPaddingText, Integer yPaddingText, Font font) {
         this.addEntry(new CategoryEntry(
                 Component.translatable(translatableKey),
                 category,

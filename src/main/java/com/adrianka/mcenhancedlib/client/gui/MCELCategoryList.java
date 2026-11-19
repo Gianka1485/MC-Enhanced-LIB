@@ -13,7 +13,9 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
     private final Consumer<E> onCategorySelected;
 
     public MCELCategoryList(Minecraft minecraft, int x, int y, int width, int height, Consumer<E> onCategorySelected) {
-        super(minecraft, x, y, width, height);
+        super(minecraft, width, height, y, 25);
+
+        this.setX(x);
 
         this.onCategorySelected = onCategorySelected;
 

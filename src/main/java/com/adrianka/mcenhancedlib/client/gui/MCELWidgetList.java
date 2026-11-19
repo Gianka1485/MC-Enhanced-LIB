@@ -9,9 +9,11 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 
+/**
+*/
 public class MCELWidgetList extends AbstractSelectionList<MCELWidgetList.WidgetEntry> {
-    public MCELWidgetList(Minecraft minecraft, int x, int y, int width, int height) {
-        super(minecraft, width, height, y, 25);
+    public MCELWidgetList(Minecraft minecraft, int x, int y, int width, int height, int defaultEntryHeight) {
+        super(minecraft, width, height, y, defaultEntryHeight);
 
         this.setX(x);
         this.centerListVertically = false;

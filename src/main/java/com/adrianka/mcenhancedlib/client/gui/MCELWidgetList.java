@@ -17,7 +17,7 @@ public class MCELWidgetList extends AbstractSelectionList<MCELWidgetList.WidgetE
         this.centerListVertically = false;
     }
 
-    public void addWidget(AbstractWidget widget) { this.addEntry(new WidgetEntry(widget), widget.getHeight()); }
+    public void addWidget(AbstractWidget widget, int spacing) { this.addEntry(new WidgetEntry(widget), widget.getHeight() + spacing); }
 
     public void clearWidgets() { this.clearEntries(); }
 

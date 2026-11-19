@@ -28,7 +28,8 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
             Minecraft minecraft,
             int x, int y, int width, int height,
             int defaultEntryHeight,
-            Consumer<E> onCategorySelected) {
+            Consumer<E> onCategorySelected
+    ) {
         super(minecraft, width, height, y, defaultEntryHeight);
 
         this.setX(x);
@@ -41,21 +42,18 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
      *
      * @param translatableKey the translation key used as the category title
      * @param category the enum value associated with this category
-     * @param xPaddingText the horizontal text padding from the content area's left edge. If {@code null},
+     * @param paddingX the horizontal content padding from the content area's left edge. If {@code null},
      *                     the content will be centered horizontally
-     * @param yPaddingText the vertical text padding from the content area's top edge. If {@code null},
+     * @param paddingY the vertical content padding from the content area's top edge. If {@code null},
      *                     the content will be centered vertically
      * @param font the font used to render the category title
      */
-    public void addCategory(String translatableKey, E category, Integer xPaddingText, Integer yPaddingText, Font font) {
-        this.addEntry(new CategoryEntry(
-                Component.translatable(translatableKey),
-                category,
-                xPaddingText,
-                yPaddingText,
-                font
-        ));
+    public void addCategory(String translatableKey, E category, Integer paddingX, Integer paddingY, Font font) {
+        this.addEntry(new CategoryEntry(Component.translatable(translatableKey), category, paddingX, paddingY, font));
     }
+
+    @Override
+    public int getRowWidth() { return this.width - 6; }
 
     @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
@@ -76,26 +74,26 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
         private final E category;
         private final Font font;
 
-        private final Integer xPaddingText;
-        private final Integer yPaddingText;
+        private final Integer paddingX;
+        private final Integer paddingY;
 
         /**
          * Creates an entry with a custom font and custom text padding.
          *
          * @param title the text displayed by the entry
          * @param category the enum value associated with the entry
-         * @param xPaddingText the horizontal padding from the content area's left edge. If {@code null},
+         * @param paddingX the horizontal padding from the content area's left edge. If {@code null},
          *                     the content will be centered horizontally
-         * @param yPaddingText the vertical padding from the content area's top edge. If {@code null},
+         * @param paddingY the vertical padding from the content area's top edge. If {@code null},
          *                     the content will be centered vertically
          * @param font the font used to render the title
          */
-        private CategoryEntry(Component title, E category, Integer xPaddingText, Integer yPaddingText, Font font) {
+        private CategoryEntry(Component title, E category, Integer paddingX, Integer paddingY, Font font) {
             this.title = title;
             this.category = category;
             this.font = font;
-            this.xPaddingText = xPaddingText;
-            this.yPaddingText = yPaddingText;
+            this.paddingX = paddingX;
+            this.paddingY = paddingY;
         }
 
         /**
@@ -108,8 +106,7 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
         @Override
         public void extractContent(
                 GuiGraphicsExtractor graphics,
-                int mouseX,
-                int mouseY,
+                int mouseX, int mouseY,
                 boolean hovered,
                 float partialTick
         ) {
@@ -118,13 +115,13 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
             graphics.text(
                     this.font,
                     this.title,
-                    this.xPaddingText != null ?
-                            this.getContentX() + this.xPaddingText :
-                            this.getContentX() + (this.getContentWidth() - this.font.width(this.title)) / 2,
+                    this.paddingX != null ?
+                            this.getContentX() + this.paddingX :
+                            this.getContentX() + 1 + (this.getContentWidth() - this.font.width(this.title)) / 2,
 
-                    this.yPaddingText != null ?
-                            this.getContentY() + this.yPaddingText :
-                            this.getContentY() + (this.getContentHeight() - this.font.lineHeight) / 2,
+                    this.paddingY != null ?
+                            this.getContentY() + this.paddingY :
+                            this.getContentY() + 1 + (this.getContentHeight() - this.font.lineHeight) / 2,
                     color
             );
         }

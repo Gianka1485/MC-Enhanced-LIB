@@ -9,35 +9,63 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 
-/**
-*/
 public class MCELWidgetList extends AbstractSelectionList<MCELWidgetList.WidgetEntry> {
-    public MCELWidgetList(Minecraft minecraft, int x, int y, int width, int height, int defaultEntryHeight) {
+    private final int marginX;
+
+    public MCELWidgetList(
+            Minecraft minecraft,
+            int x, int y, int width, int height,
+            int defaultEntryHeight,
+            int marginX
+    ) {
         super(minecraft, width, height, y, defaultEntryHeight);
 
         this.setX(x);
         this.centerListVertically = false;
+
+        this.marginX = marginX;
     }
 
-    public void addWidget(AbstractWidget widget, int spacing) { this.addEntry(new WidgetEntry(widget), widget.getHeight() + spacing); }
+    public void addWidget(AbstractWidget widget, int spacing) {
+        this.addEntry(new WidgetEntry(widget), widget.getHeight() + spacing);
+    }
 
     public void clearWidgets() { this.clearEntries(); }
 
     @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
 
-    public static class WidgetEntry extends AbstractSelectionList.Entry<WidgetEntry> {
+    @Override
+    protected int scrollBarX() { return this.getRight() - this.scrollbarWidth(); }
+
+    public int getFixedWidth() {
+        return this.scrollable() ? this.getRowWidth() - this.scrollbarWidth() : this.getRowWidth();
+    }
+
+    @Override
+    public int getRowWidth() { return this.width - marginX; }
+
+    @Override
+    protected boolean entriesCanBeSelected() { return false; }
+
+    public class WidgetEntry extends AbstractSelectionList.Entry<WidgetEntry> {
         private final AbstractWidget widget;
 
         public WidgetEntry(AbstractWidget widget) { this.widget = widget; }
 
         private void updateWidgetPosition() {
-            this.widget.setX(this.getContentX());
-            this.widget.setY(this.getContentY());
+            this.widget.setX(this.getX());
+            this.widget.setY(this.getY());
+            this.widget.setWidth(MCELWidgetList.this.getFixedWidth());
         }
 
         @Override
-        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float partialTick) {
+        public void extractContent(
+                GuiGraphicsExtractor graphics,
+                int mouseX, int mouseY,
+                boolean hovered,
+                float partialTick
+        ) {
             this.updateWidgetPosition();
             this.widget.extractRenderState(graphics, mouseX, mouseY, partialTick);
         }

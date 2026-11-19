@@ -37,45 +37,14 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
     }
 
     /**
-     * Adds a category with horizontally and vertically centered text.
-     *
-     * @param translatableKey the translation key used as the category title
-     * @param category the enum value associated with this category
-     */
-    public void addCategory(String translatableKey, E category) {
-        this.addEntry(new CategoryEntry(Component.translatable(translatableKey), category));
-    }
-
-    /**
-     * Adds a category with a custom horizontal text padding and vertically centered text.
-     *
-     * @param translatableKey the translation key used as the category title
-     * @param category the enum value associated with this category
-     * @param xPaddingText the horizontal text padding from the content area's left edge
-     */
-    public void addCategory(String translatableKey, E category, int xPaddingText) {
-        this.addEntry(new CategoryEntry(Component.translatable(translatableKey), category, xPaddingText));
-    }
-
-    /**
-     * Adds a category with custom horizontal and vertical text padding.
-     *
-     * @param translatableKey the translation key used as the category title
-     * @param category the enum value associated with this category
-     * @param xPaddingText the horizontal text padding from the content area's left edge
-     * @param yPaddingText the vertical text padding from the content area's top edge
-     */
-    public void addCategory(String translatableKey, E category, int xPaddingText, int yPaddingText) {
-        this.addEntry(new CategoryEntry(Component.translatable(translatableKey), category, xPaddingText, yPaddingText));
-    }
-
-    /**
      * Adds a category using a custom font and custom text padding.
      *
      * @param translatableKey the translation key used as the category title
      * @param category the enum value associated with this category
-     * @param xPaddingText the horizontal text padding from the content area's left edge
-     * @param yPaddingText the vertical text padding from the content area's top edge
+     * @param xPaddingText the horizontal text padding from the content area's left edge. If {@code null},
+     *                     the content will be centered horizontally
+     * @param yPaddingText the vertical text padding from the content area's top edge. If {@code null},
+     *                     the content will be centered vertically
      * @param font the font used to render the category title
      */
     public void addCategory(String translatableKey, E category, int xPaddingText, int yPaddingText, Font font) {
@@ -110,71 +79,26 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
         private final E category;
         private final Font font;
 
-        private final int xPaddingText;
-        private final int yPaddingText;
-
-        private final boolean centered;
-
-        /**
-         * Creates an entry with its title centered horizontally and vertically.
-         *
-         * @param title the text displayed by the entry
-         * @param category the enum value associated with the entry
-         */
-        public CategoryEntry(Component title, E category) {
-            this(title, category, 0, 0, MCELCategoryList.this.minecraft.font, true);
-        }
-
-        /**
-         * Creates an entry with custom horizontal padding and vertically centered text.
-         *
-         * @param title the text displayed by the entry
-         * @param category the enum value associated with the entry
-         * @param xPaddingText the horizontal padding from the content area's left edge
-         */
-        public CategoryEntry(Component title, E category, int xPaddingText) {
-            this(title, category, xPaddingText, 0, MCELCategoryList.this.minecraft.font, false);
-        }
-
-        /**
-         * Creates an entry with custom horizontal and vertical padding.
-         *
-         * @param title the text displayed by the entry
-         * @param category the enum value associated with the entry
-         * @param xPaddingText the horizontal padding from the content area's left edge
-         * @param yPaddingText the vertical padding from the content area's top edge
-         */
-        public CategoryEntry(Component title, E category, int xPaddingText, int yPaddingText) {
-            this(title, category, xPaddingText, yPaddingText, MCELCategoryList.this.minecraft.font, false);
-        }
+        private final Integer xPaddingText;
+        private final Integer yPaddingText;
 
         /**
          * Creates an entry with a custom font and custom text padding.
          *
          * @param title the text displayed by the entry
          * @param category the enum value associated with the entry
-         * @param xPaddingText the horizontal padding from the content area's left edge
-         * @param yPaddingText the vertical padding from the content area's top edge
+         * @param xPaddingText the horizontal padding from the content area's left edge. If {@code null},
+         *                     the content will be centered horizontally
+         * @param yPaddingText the vertical padding from the content area's top edge. If {@code null},
+         *                     the content will be centered vertically
          * @param font the font used to render the title
          */
-        public CategoryEntry(Component title, E category, int xPaddingText, int yPaddingText, Font font) {
-            this(title, category, xPaddingText, yPaddingText, font, false);
-        }
-
-        private CategoryEntry(
-                Component title,
-                E category,
-                int xPaddingText,
-                int yPaddingText,
-                Font font,
-                boolean centered
-        ) {
+        private CategoryEntry(Component title, E category, Integer xPaddingText, Integer yPaddingText, Font font) {
             this.title = title;
             this.category = category;
             this.font = font;
             this.xPaddingText = xPaddingText;
             this.yPaddingText = yPaddingText;
-            this.centered = centered;
         }
 
         /**
@@ -194,15 +118,17 @@ public class MCELCategoryList<E extends Enum<E>> extends AbstractSelectionList<M
         ) {
             int color = hovered ? 0xFFFFFFFF : 0xFFAAAAAA;
 
-            int textX = this.getContentX() + this.xPaddingText;
-            int textY = this.getContentY() + this.yPaddingText;
-
-            if (this.centered) {
-                textX = this.getContentX() + (this.getContentWidth() - this.font.width(this.title)) / 2;
-                textY = this.getContentY() + (this.getContentHeight() - this.font.lineHeight) / 2;
-            }
-
-            graphics.text(this.font, this.title, textX, textY, color);
+            graphics.text(
+                    this.font,
+                    this.title,
+                    xPaddingText == null ?
+                            (this.getContentX() - this.font.width(this.title)) / 2 :
+                            this.getContentX() + xPaddingText,
+                    yPaddingText == null ?
+                            (this.getContentY() - this.font.lineHeight) / 2 :
+                            this.getContentY() + yPaddingText,
+                    color
+            );
         }
 
         @Override

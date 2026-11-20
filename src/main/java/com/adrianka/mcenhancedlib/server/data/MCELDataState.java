@@ -10,14 +10,17 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Use this record to create instances of {@link SavedDataType} without needing to write a new implementation
- * to register it in your "Main" class for data storage; it improves usability somewhat by simplifying
- * the implementation.
- * This might be unnecessary, but I also created it to practice my skills.
+ * Simplifies the creation of {@link SavedDataType} instances using a constructor and a codec definition.
  *
- * @param codecGroup takes a simplified function {@code instance -> instance.group().apply()} where
- * {@code instance.group()} receives the group of encoded values; for example:
- * {@code Codec.DATA_TYPE.fieldOf("value_name").forGetter(T::getValue)}
+ * @param <T> the type of saved data
+ * @param modID the namespace used to identify the saved data
+ * @param path the path of the saved data identifier
+ * @param constructor the supplier used to create new data instances
+ * @param codecGroup the function defining the fields to serialize and deserialize.
+ *                   Use {@code instance -> instance.group(...).apply(instance, T::new)},
+ *                   where {@code group(...)} contains field definitions such as
+ *                   {@code Codec.BOOL.fieldOf("enabled").forGetter(T::isEnabled)},
+ *                   and {@code apply(...)} specifies how to reconstruct the data instance
  */
 public record MCELDataState<T extends SavedData>(
         String modID,
@@ -25,6 +28,12 @@ public record MCELDataState<T extends SavedData>(
         Supplier<T> constructor,
         Function<RecordCodecBuilder.Instance<T>, App<RecordCodecBuilder.Mu<T>, T>> codecGroup
 ) {
+
+    /**
+     * Creates a saved data type using the configured identifier, constructor, and codec.
+     *
+     * @return the configured saved data type
+     */
     public SavedDataType<T> savedData() {
         return new SavedDataType<>(
                 Identifier.fromNamespaceAndPath(modID, path),
